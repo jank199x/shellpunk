@@ -2,7 +2,7 @@ MAKEFILE_PATH := $(abspath $(lastword $(MAKEFILE_LIST)))
 MAKEFILE_DIR := $(dir $(MAKEFILE_PATH))
 
 .PHONY: build
-build:
+build: 
 	docker build -t alpine-shellpunk .
 
 .PHONY: run 
@@ -19,7 +19,17 @@ restart: kill run
 .PHONY: rebuild
 rebuild: kill build run
 
+.PHONY: ssh-keygen
+keygen: 
+	ssh-keygen -f ssh/id_rsa
+
+.PHONY: ssh-install-key
+install-key: 
+	ssh-copy-id -i ssh/id_rsa -p 2342 shellpunk@localhost
+
 .PHONY: connect
 connect:
-	#ssh shellpunk@127.0.0.1 -p 2342
 	ssh -F $(MAKEFILE_DIR)/ssh/config -i $(MAKEFILE_DIR)/ssh/id_rsa shellpunk    
+
+.PHONY: setup
+setup: build run keygen install-key connect
