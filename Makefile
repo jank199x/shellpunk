@@ -13,6 +13,13 @@ run:
 kill:
 	docker kill shellpunk   
 
+.PHONY: restart
+restart: kill run
+
+.PHONY: rebuild
+rebuild: kill build run
+
 .PHONY: connect
 connect:
-	ssh shellpunk@127.0.0.1 -p 2342
+	#ssh shellpunk@127.0.0.1 -p 2342
+	ssh -F $(MAKEFILE_DIR)/ssh/config -i $(MAKEFILE_DIR)/ssh/id_rsa shellpunk    

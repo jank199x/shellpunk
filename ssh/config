@@ -1,0 +1,6 @@
+Host shellpunk
+   HostName 127.0.0.1
+   Port 2342
+   User shellpunk
+   StrictHostKeyChecking no
+   UserKnownHostsFile=/dev/null
