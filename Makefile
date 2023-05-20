@@ -7,7 +7,7 @@ build:
 
 .PHONY: run 
 run:
-	docker run --rm --name shellpunk --detach --publish 2342:22 --volume $(MAKEFILE_DIR)/shellpunk-home:/home/shellpunk alpine-shellpunk:latest
+	docker run --rm --name shellpunk --detach --publish 2342:22 --volume $(MAKEFILE_DIR)/home:/home/shellpunk alpine-shellpunk:latest
 
 .PHONY: kill
 kill:
