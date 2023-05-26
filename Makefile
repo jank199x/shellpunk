@@ -3,7 +3,7 @@ MAKEFILE_DIR := $(dir $(MAKEFILE_PATH))
 
 .PHONY: build
 build: 
-	docker build -t arch-shellpunk .
+	docker build -t arch-shellpunk build/
 
 .PHONY: run 
 run:
