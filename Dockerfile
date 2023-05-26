@@ -1,14 +1,18 @@
-FROM alpine:latest
+FROM archlinux:latest
 LABEL maintainer="Jank jank@panichev.xyz"
 
-RUN apk add --update --no-cache openssh doas zsh mandoc man-pages mandoc-apropos docs tmux
+# eh
+RUN systemd-machine-id-setup
 
-RUN echo 'PasswordAuthentication yes' >> /etc/ssh/sshd_config
+RUN pacman -Syy --noconfirm openssh sudo zsh tmux python python-pip
 
-RUN adduser -h /home/shellpunk -s /bin/sh -D shellpunk
+RUN systemctl enable sshd
+# ehh
+RUN sed -i -e 's/^UsePAM yes/UsePAM no/g' /etc/ssh/sshd_config
+
+RUN useradd -m -d /home/shellpunk -s /bin/zsh -G wheel shellpunk
 RUN echo -n 'shellpunk:shellpunk' | chpasswd
-RUN echo 'permit nopass :shellpunk' > /etc/doas.d/doas.conf
-RUN sed -i -e "s/home\/shellpunk:\/bin\/sh/home\/shellpunk:\/bin\/zsh/" /etc/passwd
+RUN echo 'shellpunk ALL=(ALL) NOPASSWD: ALL' > /etc/sudoers.d/99-shellpunk
 
 EXPOSE 22
 COPY entrypoint.sh /
